@@ -17,7 +17,14 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
         {
             return View();
         }
-       
+        public IActionResult DataManagement()
+        {
+            return View();
+        }
+        public IActionResult FileProcessing()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
