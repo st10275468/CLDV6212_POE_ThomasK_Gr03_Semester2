@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "File Page";
+}
+<div class="text-center">
+    <form asp-action="UploadFile" asp-controller="FileProcessing" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Upload File</button>
+    </form>
+</div>
