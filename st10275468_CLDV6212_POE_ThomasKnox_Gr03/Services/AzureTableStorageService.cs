@@ -8,7 +8,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     public class AzureTableStorageService
     {
         private readonly TableClient _tableClient;
-
+        //a
         public AzureTableStorageService(IConfiguration configuration)
         {
             if (configuration == null)
