@@ -13,20 +13,35 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             _azureTableStorageService = azureTableStorageService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpPost]
         public async Task<IActionResult> AddCustomerDetails(CustomerDetails customer)
         {
             if (ModelState.IsValid)
             {
-                await _azureTableStorageService.AddEntityAsync(customer);
+                try
+                {
+                    await _azureTableStorageService.AddEntityAsync(customer);
+                    TempData["SuccessMessage"] = "Customer details added";
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "An error occured";
 
+                    return RedirectToAction("Index");
+                }
             }
-            return RedirectToAction("Index");
+            else
+            {
+                TempData["ErrorMessage"] = "Invalid data. Please check the input and try again.";
+            }
+            return View("DataManagement", customer);
         }
+        [HttpGet]
+        public IActionResult DataManagement()
+        {
+            return View();
+        }
+
     }
 }

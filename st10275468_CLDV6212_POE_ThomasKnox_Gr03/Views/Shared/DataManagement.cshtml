@@ -1,0 +1,38 @@
+﻿@model st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models.CustomerDetails
+
+
+<div class="text-center">
+    <h1 class="display-4">Add customer profiles below:</h1>
+    <form asp-action="AddCustomerDetails" asp-controller="DataManagement" method="post">
+    <input type="text" name="name" placeholder="Name" />
+    <input type="text" name="surname" placeholder="Surname" />
+    <input type="email" name="email" placeholder="Email" />
+    <input type="text" name="number" placeholder="Number" />
+    <button type="submit">Add Profile</button>
+    </form>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="message" class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div id="message" class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var messageDiv = document.getElementById('message');
+            if (messageDiv) {
+                setTimeout(function() {
+                    messageDiv.style.display = 'none';
+                }, 3000); // Hide message after 3 seconds
+            }
+        });
+    </script>
+}
