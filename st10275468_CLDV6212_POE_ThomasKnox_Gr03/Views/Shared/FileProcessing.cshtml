@@ -13,6 +13,9 @@
     </form>
 </div>
 <div>
-
+    <form asp-action="ProcessOrder" asp-controller="FileProcessing" method="post">
+        <input type="text" name="orderID" placeholder="Order ID" />
+        <button type="submit">Process Order</button>
+    </form>
 
 </div>

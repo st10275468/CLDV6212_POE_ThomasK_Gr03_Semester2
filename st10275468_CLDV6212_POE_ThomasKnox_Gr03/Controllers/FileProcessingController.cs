@@ -6,10 +6,12 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
     {
         private readonly AzureFileService _azureFileService;
         private readonly AzureBlobStorageService _azureBlobStorageService;
-        public FileProcessingController(AzureFileService azureFileService, AzureBlobStorageService azureBlobStorageService)
+        private readonly AzureQueueService _azureQueueService;
+        public FileProcessingController(AzureFileService azureFileService, AzureBlobStorageService azureBlobStorageService, AzureQueueService azureQueueService)
         {
             _azureFileService = azureFileService;
             _azureBlobStorageService = azureBlobStorageService;
+            _azureQueueService = azureQueueService;
         }
 
         public IActionResult FileProcessing()
@@ -37,6 +39,13 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 await _azureBlobStorageService.UploadBlobAsync("multimedia-blob-storage", file.FileName, stream);
 
             }
+            return View("FileProcessing");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessOrder(string orderID)
+        {
+            await _azureQueueService.SendMessageAsync("processing-queue",$"Processing order {orderID}");
             return View("FileProcessing");
         }
         
