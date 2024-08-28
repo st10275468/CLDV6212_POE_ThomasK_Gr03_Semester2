@@ -13,4 +13,12 @@
     <PackageReference Include="Azure.Storage.Queues" Version="12.19.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\Background1.jpg" />
+  </ItemGroup>
+
 </Project>
