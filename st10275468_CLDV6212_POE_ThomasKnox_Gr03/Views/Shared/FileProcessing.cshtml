@@ -1,21 +1,75 @@
 ﻿@{
     ViewData["Title"] = "File Page";
 }
-<div class="text-center">
-    <form asp-action="UploadFile" asp-controller="FileProcessing" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">Upload File</button>
-    </form>
+<style>
+    .container{
+        display:flex;
+        justify-content: space-between;
+        padding-top:20px;
+        width: 100%;
+        box-sizing:border-box;
+       
+    }
 
-    <form asp-action="UploadMedia" asp-controller="FileProcessing" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">Upload Media</button>
-    </form>
+    .div1, .div2 {
+        flex: 1; 
+    }
+    .div1 {
+    
+    margin-right: 10px;
+    padding-left: 106px;
+    }
+    .div2{
+        
+        padding-left:200px
+   
+    }
+    .div3{
+       
+    padding-top: 100px;
+    padding-left: 113px;
+    }
+    h {
+        
+        font-size:23px;
+    }
+    .space {
+        padding-top:10px;
+    }
+    h1{
+        padding-top:20px;
+        padding-left: 113px;
+    }
+</style>
+<h1>Upload product images or contracts:</h1>
+<div class=" container">
+
+    
+    <div class="div1">
+
+        <h>Upload contracts: </h>
+        <form asp-action="UploadFile" asp-controller="FileProcessing" method="post" enctype="multipart/form-data" class=" space">
+            <input type="file" name="file" />
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <div class="div2">
+        <h>Upload product images: </h>
+        <form asp-action="UploadMedia" asp-controller="FileProcessing" method="post" enctype="multipart/form-data" class=" space">
+            <input type="file" name="file" />
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+   
 </div>
-<div>
-    <form asp-action="ProcessOrder" asp-controller="FileProcessing" method="post">
+
+
+
+<div class=" div3">
+    <h2>Process orders below:</h2>
+    <form asp-action="ProcessOrder" asp-controller="FileProcessing" method="post" class=" space">
         <input type="text" name="orderID" placeholder="Order ID" />
-        <button type="submit">Process Order</button>
+        <button type="submit">Process</button>
     </form>
 
 </div>

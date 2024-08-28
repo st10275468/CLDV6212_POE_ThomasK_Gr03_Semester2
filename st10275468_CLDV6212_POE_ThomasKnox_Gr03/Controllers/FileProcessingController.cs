@@ -26,6 +26,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 using var stream = file.OpenReadStream();
                 await _azureFileService.UploadFileAsync("file-storage", file.FileName, stream);
 
+                await _azureQueueService.SendMessageAsync("processing-queue", $"Uploading contract/document: {file.FileName}");
             }
             return View("FileProcessing");
         }
@@ -38,7 +39,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 using var stream = file.OpenReadStream();
                 await _azureBlobStorageService.UploadBlobAsync("multimedia-blob-storage", file.FileName, stream);
 
-                await _azureQueueService.SendMessageAsync("processing-queue", $"Uploading media file: {file.FileName}");
+                await _azureQueueService.SendMessageAsync("processing-queue", $"Uploading product image: {file.FileName}");
             }
             return View("FileProcessing");
         }
