@@ -5,21 +5,103 @@
     body {
         color: #FFFFFF;
         background-image: url('Images/Background1.jpg');
-        background-size: cover; 
-        background-repeat: no-repeat; 
-        background-position: center center; 
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin: 0;
+        height: 60vh; 
     }
-    .div1{
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        justify-content: center;
+        padding: 0 20px;
+    }
+
+    .header {
         text-align: center;
-        padding-top: 20px;
     }
 
+    .features-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1200px; 
+        margin-top: 20px;
+    }
 
+    .features-list {
+        max-width: 350px;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: left;
+        margin-right: 300px;
+
+    }
+
+    .features-list2 {
+        margin-left: 250px;
+        max-width: 400px;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+        .features-list h2,
+        .features-list2 h2 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .features-list ul,
+        .features-list2 ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .features-list li,
+        .features-list2 li {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .p1{
+            font-size: 30px;
+        }
+
+    
 </style>
+
 <body>
-<div class="div1">
-    <h1 class="display-4">Heading</h1>
-    <p>Paragraph</p>
-    <p>Paragraph</p>
-</div>
+    <div class="container">
+        <div class="header">
+            <h1 class="display-4">ABC Retail</h1>
+            <p class="p1"><i>Management System</i></p>
+        </div>
+
+        <div class="features-wrapper">
+            <div class="features-list">
+                <h2>Employee Features:</h2>
+                <ul>
+                    <li>> Create Customer Profiles</li>
+                    <li>> Upload Product Images</li>
+                    <li>> Upload Contracts/Documents</li>
+                    <li>> Process Orders</li>
+                </ul>
+            </div>
+
+            <div class="features-list2">
+                <h2>Features in Development:</h2>
+                <ul>
+                    <li>> Implementing Azure functions</li>
+                    <li>> Implementing a database</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>

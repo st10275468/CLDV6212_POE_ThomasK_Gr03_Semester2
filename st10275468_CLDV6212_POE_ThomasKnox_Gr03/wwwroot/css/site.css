@@ -20,3 +20,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+.navbar {
+    background-color: #000000; 
+    border-bottom: 1px solid #ffffff; 
+}
+
+    .navbar .navbar-brand {
+        color: #ffffff; 
+    }
+
+    .navbar .navbar-nav .nav-link {
+        color: #ffffff; 
+        padding: 15px; 
+        border-right: 2px solid #ffffff;
+    }
+
+        .navbar .navbar-nav .nav-link:last-child {
+            border-right: none;
+        }
+
+        .navbar .navbar-nav .nav-link:hover {
+            color: #cccccc; 
+        }
+
+
+.navbar-toggler-icon {
+    background-color: #ffffff; 
+}
