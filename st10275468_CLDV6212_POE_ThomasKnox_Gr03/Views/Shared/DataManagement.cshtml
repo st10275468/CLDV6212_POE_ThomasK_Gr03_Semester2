@@ -1,4 +1,4 @@
-﻿@model st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models.CustomerDetails
+﻿@model IEnumerable<st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models.CustomerDetails>
 <style>
     body {
         color: #FFFFFF;
@@ -8,7 +8,7 @@
         background-position: center center; 
     }
     .div1{
-        padding-top:20px;
+        padding-top:10px;
         text-align: center;
     }
 
@@ -16,51 +16,116 @@
         font-size: 28px;
         font-weight: 300;
         line-height: 1.2;
-        padding-top: 50px;
+        padding-top: 20px;
         text-align: left;
         padding-left:213px;
         margin-bottom: 5px;
         color: inherit;
         margin-left: 0px;
-        
     }
 
-</style>
-<body>
-<div class="div1">
-    <h1 class="display-4">Create a customer profile:</h1>
+    .heading-center {
+        text-align: center;
+        margin-top: 20px; 
+        font-size: 24px; 
+        color: #000; 
+    }
 
-    <h1 class="display-4-smaller">Enter the following information below:</h1>
-    <form asp-action="AddCustomerDetails" asp-controller="DataManagement" method="post">
-    <input type="text" name="name" placeholder="Name" />
-    <input type="text" name="surname" placeholder="Surname" />
-    <input type="email" name="email" placeholder="Email" />
-    <input type="text" name="number" placeholder="Number" />
-    <button type="submit">Add Profile</button>
-    </form>
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div id="message" class="alert alert-success">
-            @TempData["SuccessMessage"]
-        </div>
+    form {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        display: inline-block;
     }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div id="message" class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-</div>
-</body>
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var messageDiv = document.getElementById('message');
-            if (messageDiv) {
-                setTimeout(function() {
-                    messageDiv.style.display = 'none';
-                }, 3000); 
+
+        form input {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        form button {
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            form button:hover {
+                background-color: #0056b3;
+                border-color: #004085;
             }
-        });
-    </script>
-}
+
+    table.customer-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        table.customer-table th,
+        table.customer-table td {
+            border: 1px solid #333; 
+            padding: 8px; 
+            text-align: left; 
+            color: #000; 
+        }
+
+        table.customer-table th {
+            background-color: #f4f4f4; 
+            color: #000; 
+        }
+
+        table.customer-table td {
+            background-color: #fff; 
+        }
+</style>
+
+
+<body>
+    <div class="div1">
+        <h1 class="display-4">Create a customer profile:</h1>
+        <h1 class="display-4-smaller">Enter the following information below:</h1>
+        <form asp-action="AddCustomerDetails" asp-controller="DataManagement" method="post">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="surname" placeholder="Surname" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="text" name="number" placeholder="Number" />
+            <button type="submit">Add Profile</button>
+        </form>
+    </div>
+    <div class="div1">
+    <h1 class="display-4">Customer Profiles:</h1>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        <table class="customer-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var profile in Model)
+                {
+                    <tr>
+                        <td>@profile.name</td>
+                        <td>@profile.surname</td>
+                        <td>@profile.email</td>
+                        <td>@profile.number</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No customer profiles available.</p>
+    }
+</body>

@@ -23,27 +23,48 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 try
                 {
                     await _azureTableStorageService.AddEntityAsync(customer);
-                    TempData["SuccessMessage"] = "Customer details added";
                     await _azureQueueService.SendMessageAsync("processing-queue", $"Creating customer profile: {customer.name}");
+                    return RedirectToAction("DataManagement");
                 }
-                catch (Exception ex)
+                catch
                 {
-                    TempData["ErrorMessage"] = "An error occured";
-
-                    return RedirectToAction("Index");
+                    return RedirectToAction("DataManagement");
                 }
             }
-            else
+            return RedirectToAction("DataManagement");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> DataManagement()
+        {
+            try
             {
-                TempData["ErrorMessage"] = "Invalid data. Please check the input and try again.";
+                var customerProfiles = await _azureTableStorageService.GetAllEntitiesAsync();
+                return View(customerProfiles); 
             }
-            return View("DataManagement", customer);
+            catch
+            {
+                
+                return View(new List<CustomerDetails>()); 
+            }
         }
         [HttpGet]
-        public IActionResult DataManagement()
+        public async Task<IActionResult> GetCustomerProfiles()
         {
-            return View();
+            try
+            {
+                var customerProfiles = await _azureTableStorageService.GetAllEntitiesAsync();
+                return PartialView("CustomerProfilesPartial", customerProfiles);
+            }
+            catch
+            {
+               
+                return PartialView("CustomerProfilesPartial", new List<CustomerDetails>()); 
+            }
         }
+
+
 
     }
 }

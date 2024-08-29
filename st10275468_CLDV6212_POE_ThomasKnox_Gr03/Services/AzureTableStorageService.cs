@@ -8,7 +8,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     public class AzureTableStorageService
     {
         private readonly TableClient _tableClient;
-        
+
         public AzureTableStorageService(IConfiguration configuration)
         {
             if (configuration == null)
@@ -16,16 +16,16 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
                 throw new ArgumentNullException(nameof(configuration));
             }
             var connectionString = configuration["AzureStorage:ConnectionString"];
-            
+
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentException("Azure connection string is invalid");
             }
 
             var serviceClient = new TableServiceClient(connectionString);
-           
-            
-            _tableClient = serviceClient.GetTableClient("CustomerDetails");
+
+
+            _tableClient = serviceClient.GetTableClient("customerdetails");
 
             _tableClient.CreateIfNotExists();
         }
@@ -36,7 +36,25 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             {
                 throw new ArgumentNullException(nameof(customer));
             }
-            await _tableClient.AddEntityAsync(customer);    
+            await _tableClient.AddEntityAsync(customer);
+        }
+
+        public async Task<List<CustomerDetails>> GetAllEntitiesAsync()
+        {
+            try
+            {
+                var query = _tableClient.QueryAsync<CustomerDetails>(filter: $"PartitionKey eq 'CustomerDetails'");
+                var results = new List<CustomerDetails>();
+                await foreach (var entity in query)
+                {
+                    results.Add(entity);
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to retrieve customer profiles", ex);
+            }
         }
     }
 }
