@@ -31,34 +31,28 @@
         color: #000; 
     }
 
-    form {
-        border: 1px solid #ddd;
-        padding: 20px;
-        border-radius: 5px;
-        display: inline-block;
+    form input {
+        border: 1px solid #ccc;
+        padding: 4px 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        width: 15%; 
+        box-sizing: border-box; 
     }
 
-        form input {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            width: 100%;
-        }
+    form button {
+        border: 1px solid #007bff;
+        background-color: #007bff;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-        form button {
-            border: 1px solid #007bff;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+        form button:hover {
+            background-color: #0056b3;
+            border-color: #004085;
         }
-
-            form button:hover {
-                background-color: #0056b3;
-                border-color: #004085;
-            }
 
     table.customer-table {
         width: 100%;
@@ -98,7 +92,7 @@
         </form>
     </div>
     <div class="div1">
-    <h1 class="display-4">Customer Profiles:</h1>
+        <h1 class="display-4">Customer Profiles:</h1>
     </div>
     @if (Model != null && Model.Any())
     {
@@ -126,6 +120,6 @@
     }
     else
     {
-        <p>No customer profiles available.</p>
+        <p class=" display-4-smaller">Refresh customer profiles by clicking add profile </p>
     }
 </body>
