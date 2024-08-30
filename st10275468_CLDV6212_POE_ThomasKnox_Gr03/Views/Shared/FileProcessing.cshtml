@@ -92,11 +92,11 @@
     }
 </style>
 <body>
-    <h1 class="display-4">Upload contracts or product images:</h1>
-
+    <h1 class="display-4">Upload Contracts or Product images:</h1>
+    <!--Below, employees can upload contracts, product inages or process orders-->
     <div class="container">
         <div class="div1">
-            <h2 class="display-4-smaller">Upload contracts:</h2>
+            <h2 class="display-4-smaller">Upload Contracts:</h2>
             <form asp-action="UploadFile" asp-controller="FileProcessing" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" />
                 <button type="submit">Upload</button>
@@ -104,7 +104,7 @@
         </div>
 
         <div class="div2 gap">
-            <h2 class="display-4-smaller">Upload product images:</h2>
+            <h2 class="display-4-smaller">Upload Product images:</h2>
             <form asp-action="UploadMedia" asp-controller="FileProcessing" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" />
                 <button type="submit">Upload</button>
@@ -113,10 +113,13 @@
     </div>
 
     <div class="div3">
-        <h2 class="display-4-smaller">Process orders below:</h2>
+        <h2 class="display-4-smaller">Process an Order:</h2>
         <form asp-action="ProcessOrder" asp-controller="FileProcessing" method="post">
             <input type="text" name="orderID" placeholder="Order ID" />
             <button type="submit">Process</button>
         </form>
     </div>
 </body>
+
+<!--//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/[Accessed: 18 August 2024].-->

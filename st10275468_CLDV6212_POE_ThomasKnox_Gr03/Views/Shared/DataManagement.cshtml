@@ -80,9 +80,10 @@
 
 
 <body>
+    <!--Where the employees can create new customer profiles-->
     <div class="div1">
-        <h1 class="display-4">Create a customer profile:</h1>
-        <h1 class="display-4-smaller">Enter the following information below:</h1>
+        <h1 class="display-4">Create a Customer Profile:</h1>
+        <h1 class="display-4-smaller">Enter the following customer credentials:</h1>
         <form asp-action="AddCustomerDetails" asp-controller="DataManagement" method="post">
             <input type="text" name="name" placeholder="Name" />
             <input type="text" name="surname" placeholder="Surname" />
@@ -94,6 +95,7 @@
     <div class="div1">
         <h1 class="display-4">Customer Profiles:</h1>
     </div>
+    <!--This is where the customer profiles are displayed-->
     @if (Model != null && Model.Any())
     {
         <table class="customer-table">
@@ -123,3 +125,5 @@
         <p class=" display-4-smaller">Refresh customer profiles by clicking add profile </p>
     }
 </body>
+<!--//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/[Accessed: 18 August 2024].-->
