@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "st10275468_CLDV6212_PoePart2_Sem2_Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7199",
+      "launchBrowser": false
+    }
+  }
+}
