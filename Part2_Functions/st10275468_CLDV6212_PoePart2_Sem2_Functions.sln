@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "st10275468_CLDV6212_PoePart2_Sem2_Functions", "st10275468_CLDV6212_PoePart2_Sem2_Functions\st10275468_CLDV6212_PoePart2_Sem2_Functions.csproj", "{0F09EDEC-2409-4D1B-9E5B-2BE969926711}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1EDDA58-4CED-4523-9A65-0EF6D49FCB58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace st10275468_CLDV6212_PoePart2_Sem2_Functions
 {
-    public class storeTableFunction
+    public class FunctionRoot
     {
-        private readonly ILogger<storeTableFunction> _logger;
+        private readonly ILogger<FunctionRoot> _logger;
 
-        public storeTableFunction(ILogger<storeTableFunction> logger)
+        public FunctionRoot(ILogger<FunctionRoot> logger)
         {
             _logger = logger;
         }
 
-        [Function("storeTableFunction")]
+        [Function("HTTPTest")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
