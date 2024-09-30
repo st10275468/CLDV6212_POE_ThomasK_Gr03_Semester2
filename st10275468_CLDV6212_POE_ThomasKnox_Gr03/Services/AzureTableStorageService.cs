@@ -1,5 +1,4 @@
-﻿
-using Azure;
+﻿using Azure;
 using Azure.Data.Tables;
 using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             {
                 throw new ArgumentException("Azure connection string is invalid");
             }
-           //Creating a new instance of table service client with the valid connection string
+            //Creating a new instance of table service client with the valid connection string
             var serviceClient = new TableServiceClient(connectionString);
 
             //Getting it to interact with the table i created on azure

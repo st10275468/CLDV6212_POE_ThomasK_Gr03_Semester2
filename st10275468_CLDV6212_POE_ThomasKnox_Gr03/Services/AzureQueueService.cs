@@ -6,7 +6,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     {
         private readonly QueueServiceClient _azureQueueServiceClient;
 
-       
+
         public AzureQueueService(IConfiguration configuration)
         {
             _azureQueueServiceClient = new QueueServiceClient(configuration["AzureStorage:ConnectionString"]);

@@ -7,7 +7,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     {
         private readonly ShareServiceClient _shareServiceClient;
 
-        
+
         public AzureFileService(IConfiguration configuration)
         {
             //Throwing an exception if configuration is null
@@ -31,7 +31,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             await fileClient.CreateAsync(content.Length);
             await fileClient.UploadAsync(content);
         }
-        
-    
+
+
     }
 }

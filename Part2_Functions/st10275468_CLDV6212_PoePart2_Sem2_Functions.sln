@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "st10275468_CLDV6212_PoePart2_Sem2_Functions", "st10275468_CLDV6212_PoePart2_Sem2_Functions\st10275468_CLDV6212_PoePart2_Sem2_Functions.csproj", "{0F09EDEC-2409-4D1B-9E5B-2BE969926711}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1EDDA58-4CED-4523-9A65-0EF6D49FCB58}"
+	ProjectSection(SolutionItems) = preProject
+		Startup.cs = Startup.cs
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "st10275468_CLDV6212_POE_ThomasKnox_Gr03", "..\st10275468_CLDV6212_POE_ThomasKnox_Gr03\st10275468_CLDV6212_POE_ThomasKnox_Gr03.csproj", "{B1CB3B78-661A-4796-A988-FB1453F9703B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +22,10 @@ Global
 		{0F09EDEC-2409-4D1B-9E5B-2BE969926711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F09EDEC-2409-4D1B-9E5B-2BE969926711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F09EDEC-2409-4D1B-9E5B-2BE969926711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CB3B78-661A-4796-A988-FB1453F9703B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CB3B78-661A-4796-A988-FB1453F9703B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CB3B78-661A-4796-A988-FB1453F9703B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CB3B78-661A-4796-A988-FB1453F9703B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

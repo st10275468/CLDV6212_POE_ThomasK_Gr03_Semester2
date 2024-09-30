@@ -2,8 +2,14 @@
   "profiles": {
     "st10275468_CLDV6212_PoePart2_Sem2_Functions": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7199",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7199"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "DockerfileRunArguments": "--init",
+      "httpPort": 33826,
+      "useSSL": false
     }
   }
 }

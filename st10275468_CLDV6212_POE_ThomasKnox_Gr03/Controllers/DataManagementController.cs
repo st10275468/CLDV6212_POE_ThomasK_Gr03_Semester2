@@ -46,12 +46,12 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             try
             {
                 var customerProfiles = await _azureTableStorageService.GetAllEntitiesAsync();
-                return View(customerProfiles); 
+                return View(customerProfiles);
             }
             catch
             {
-                
-                return View(new List<CustomerDetails>()); 
+
+                return View(new List<CustomerDetails>());
                 //Will display an empty list if an error were to occur
             }
         }
@@ -68,8 +68,8 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             }
             catch
             {
-               
-                return PartialView("CustomerProfilesPartial", new List<CustomerDetails>()); 
+
+                return PartialView("CustomerProfilesPartial", new List<CustomerDetails>());
             }
         }
 

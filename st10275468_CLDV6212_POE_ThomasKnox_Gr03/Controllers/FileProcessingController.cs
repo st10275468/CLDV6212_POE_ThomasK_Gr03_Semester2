@@ -58,9 +58,9 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
         public async Task<IActionResult> ProcessOrder(string orderID)
         {
             //Sending the message to the queueu service called processing-queue
-            await _azureQueueService.SendMessageAsync("processing-queue",$"Processing order {orderID}");
+            await _azureQueueService.SendMessageAsync("processing-queue", $"Processing order {orderID}");
             return View("FileProcessing");
         }
-        
+
     }
 }
