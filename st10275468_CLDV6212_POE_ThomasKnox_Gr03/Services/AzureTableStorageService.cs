@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Data.Tables;
+using Microsoft.Extensions.Configuration;
 using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models;
 using System.Threading.Tasks;
 namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
@@ -7,6 +8,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     public class AzureTableStorageService
     {
         private readonly TableClient _tableClient;
+        private readonly string _tableName = "customerdetails";
 
         //Initializing the Table storage service using the connection string from azure
         public AzureTableStorageService(IConfiguration configuration)
@@ -29,7 +31,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             var serviceClient = new TableServiceClient(connectionString);
 
             //Getting it to interact with the table i created on azure
-            _tableClient = serviceClient.GetTableClient("customerdetails");
+            _tableClient = serviceClient.GetTableClient(_tableName);
 
             _tableClient.CreateIfNotExists();
         }
@@ -37,13 +39,28 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         //Method created to create a new customer profile and upload it as an entity on azure table service
         public async Task AddEntityAsync(CustomerDetails customer)
         {
-            //Exception if customer properties are null
             if (customer == null)
             {
                 throw new ArgumentNullException(nameof(customer));
             }
-            await _tableClient.AddEntityAsync(customer);
+
+            var entity = new TableEntity
+            {
+                PartitionKey = customer.PartitionKey, // Use the appropriate PartitionKey
+                RowKey = Guid.NewGuid().ToString() // Generate a unique RowKey
+            };
+
+            // Map customer properties to the TableEntity
+            entity["name"] = customer.name;
+            entity["surname"] = customer.surname;
+            entity["email"] = customer.email;
+            entity["number"] = customer.number;
+
+            await _tableClient.AddEntityAsync(entity);
         }
+
+
+    
 
         //Method created to get all the customer profiles from the table on azure
         public async Task<List<CustomerDetails>> GetAllEntitiesAsync()

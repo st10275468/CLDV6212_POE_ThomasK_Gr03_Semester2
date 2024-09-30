@@ -3,35 +3,57 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models;
+using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services;
 
 namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 {
-    public static class StoreTableFunction
+    public class StoreTableFunction
     {
-        [Function("StoreTableFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            string tableName = req.Query["tableName"];
-            string partitionKey = req.Query["partitionKey"];
-            string rowKey = req.Query["rowKey"];
-            string data = req.Query["data"];
+        private readonly AzureTableStorageService _tableStorageService;
 
-            if (string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(partitionKey) || string.IsNullOrEmpty(rowKey) || string.IsNullOrEmpty(data))
+        // Dependency injection for the storage service
+        public StoreTableFunction(AzureTableStorageService tableStorageService)
+        {
+            _tableStorageService = tableStorageService;
+
+        }
+        [Function("StoreTableInfo")]
+        public async Task<IActionResult> Run(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+    ILogger log)
+        {
+            log.LogInformation("Processing a request to store customer details.");
+
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            log.LogInformation($"Request body: {requestBody}"); // Log the incoming request body
+
+            var customer = JsonConvert.DeserializeObject<CustomerDetails>(requestBody);
+
+            // Check if deserialization succeeded
+            if (customer == null)
             {
-                return new BadRequestObjectResult("Table name, partition key, row key, and data must be provided.");
+                Console.WriteLine(("CustomerDetails is null. Request body: " + requestBody));
+                return new BadRequestObjectResult("Invalid customer details. Please provide valid data.");
             }
 
-            var connectionString = Environment.GetEnvironmentVariable("AzureStorage:ConnectionString");
-            var serviceClient = new TableServiceClient(connectionString);
-            var tableClient = serviceClient.GetTableClient(tableName);
-            await tableClient.CreateIfNotExistsAsync();
-
-            var entity = new TableEntity(partitionKey, rowKey) { ["Data"] = data };
-            await tableClient.AddEntityAsync(entity);
-
-            return new OkObjectResult("Data added to table");
+            try
+            {
+                // Check if the service is initialized and working
+                await _tableStorageService.AddEntityAsync(customer);
+                Console.WriteLine("Customer added successfully.");
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding customer: {ex.Message}");
+                return new StatusCodeResult(500); // Internal Server Error
+            }
         }
+       
     }
+    
+    
 }
+

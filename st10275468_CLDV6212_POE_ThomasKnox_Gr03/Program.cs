@@ -16,7 +16,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03
             builder.Services.AddSingleton<AzureBlobStorageService>();
             builder.Services.AddSingleton<AzureFileService>();
             builder.Services.AddSingleton<AzureQueueService>();
-
+            builder.Services.AddHttpClient();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
