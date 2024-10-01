@@ -23,7 +23,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             using var formContent = new MultipartFormDataContent();
             var streamContent = new StreamContent(content);
             streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-            formContent.Add(streamContent, "file-storage", fileName);
+            formContent.Add(streamContent, "file", fileName);
             try
             {
                 var response = await _httpClient.PostAsync(url, formContent);
