@@ -10,9 +10,10 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     public class AzureTableStorageService
     {
         private readonly TableClient _tableClient;
+        //Azure table name
         private readonly string _tableName = "customerdetails";
         private readonly HttpClient _httpClient;
-        //Initializing the Table storage service using the connection string from azure
+ 
         public AzureTableStorageService(HttpClient httpClient ,IConfiguration configuration)
         {
             if (configuration == null)
@@ -25,18 +26,20 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             {
                 throw new ArgumentException("Azure connection string is invalid");
             }
-
+            //Initializing the clients
             var serviceClient = new TableServiceClient(connectionString);
             _tableClient = serviceClient.GetTableClient(_tableName);
-            _tableClient.CreateIfNotExists(); // Ensure the table exists
+            _tableClient.CreateIfNotExists(); 
+            //creating a new table if it doesnt exist
             _httpClient = httpClient;
         }
 
+        //Method created that calls the function via the funcion URL which then uploads the customer details to azure
         public async Task<string> AddCustomerAsync(CustomerDetails customer)
         {
             try
             {
-                // Constructing the request URL by appending query parameters for customer data
+                //Creating the url based on the parameters
                 var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/StoreTableFunction?code=EWcNtaatLW27vpgW6GrrQQ0IraX3hSatklo7p6ogiBMfAzFuEUb2Mw%3D%3D" +
                                  $"&tableName=customerdetails" +
                                  $"&partitionKey=CustomerDetails" +
@@ -46,21 +49,21 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
                                  $"&email={customer.email}" +
                                  $"&number={customer.number}";
 
-                // Sending the POST request
+               //Sending a request for the function
                 var response = await _httpClient.PostAsync(requestUrl, null);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return $"Customer {customer.name} added successfully.";
+                    return $"Customer {customer.name} added";
                 }
                 else
                 {
-                    throw new Exception("Error occurred while adding customer details.");
+                    throw new Exception("Error");
                 }
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Failed to add customer to Azure Function", ex);
+                throw new InvalidOperationException("Failed to upload customer", ex);
             }
         }
 
@@ -90,5 +93,6 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         }
     }
 }
-//Reference List:
-//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/[Accessed: 18 August 2024].
+/*//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/ [Accessed: 1 October 2024].
+*/

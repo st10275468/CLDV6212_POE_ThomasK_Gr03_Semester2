@@ -16,6 +16,7 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
         [Function("StoreTableFunction")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest request)
         {
+            //Retrieving the parameters
             string tblName = request.Query["tableName"];
             string partitionKey = request.Query["partitionKey"];
             string rowKey = request.Query["rowKey"];
@@ -24,6 +25,7 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
             string email = request.Query["email"];
             string number = request.Query["number"];
 
+            //Checking if the paramaters have been inputted
             if (string.IsNullOrEmpty(tblName) ||
                 string.IsNullOrEmpty(partitionKey) ||
                 string.IsNullOrEmpty(rowKey) ||
@@ -34,18 +36,24 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
             {
                 return new BadRequestObjectResult("All fields must be provided");
             }
+            try
+            {
+                //Getting the connection string
+                var conString = Environment.GetEnvironmentVariable("connectionStorage");
+                var serviceClient = new TableServiceClient(conString);
+                var tableClient = serviceClient.GetTableClient(tblName);
+                await tableClient.CreateIfNotExistsAsync();
+                //Creating a new table entity with the parameters
+                var entity = new TableEntity(partitionKey, rowKey) { ["name"] = name, ["surname"] = surname, ["email"] = email, ["number"] = number };
 
-            var conString = Environment.GetEnvironmentVariable("connectionStorage");
-           var serviceClient = new TableServiceClient(conString);
-            var tableClient = serviceClient.GetTableClient(tblName);
-            await tableClient.CreateIfNotExistsAsync();
-
-            var entity = new TableEntity(partitionKey, rowKey) { ["name"] = name, ["surname"] = surname , ["email"] = email, ["number"] = number};
-            
-            await tableClient.AddEntityAsync(entity);
-
-            return new OkObjectResult("Customer added to table");
-            
+                await tableClient.AddEntityAsync(entity);
+                //Adding the entity to the table 
+                return new OkObjectResult("Customer added to table");
+            }
+            catch
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
                
         }
     }
@@ -53,3 +61,6 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 
 }
 
+/*//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/ [Accessed: 1 October 2024].
+Call, B. M. (2024, September). CLDV_FunctionsApp. Retrieved from Git Hub: https://github.com/ByronMcCallLecturer/CLDV_FunctionsApp/tree/master */

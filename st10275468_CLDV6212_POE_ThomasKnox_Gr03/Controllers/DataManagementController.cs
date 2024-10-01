@@ -22,7 +22,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             _httpClient = httpClient;
         }
 
-        //Method created to add a new customer profie to the table storage service on azure
+        //Method created that gets the input and passes it to the storage service through a method
         [HttpPost]
         public async Task<IActionResult> AddCustomerDetails(CustomerDetails customer)
         {
@@ -30,7 +30,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             {
                 try
                 {
-                    // Call the Azure Function to add the customer
+                    //Using a method to transfer the data to the storage service
                     var message = await _azureTableStorageService.AddCustomerAsync(customer);
                     TempData["SuccessMessage"] = message;
                 }
@@ -84,5 +84,6 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
     }
 }
-//Reference List:
-//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/[Accessed: 18 August 2024].
+/*//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/ [Accessed: 1 October 2024].
+*/

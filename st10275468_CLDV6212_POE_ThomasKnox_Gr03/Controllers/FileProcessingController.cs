@@ -8,6 +8,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
     [Route("[controller]")]
     public class FileProcessingController : Controller
     {
+        //Injecting azure service dependancies
         private readonly AzureFileService _azureFileService;
         private readonly AzureQueueService _azureQueueService;
         private readonly AzureBlobStorageService _azureBlobStorageService;
@@ -15,6 +16,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
         private readonly HttpClient _httpClient;
         public FileProcessingController( AzureFileService azureFileService, AzureQueueService azureQueueService, AzureBlobStorageService azureBlobService, HttpClient httpClient)
         {
+            //initializing the services
             _azureFileService = azureFileService;
             _azureQueueService = azureQueueService;
             _azureBlobStorageService = azureBlobService;
@@ -22,24 +24,26 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
         }
 
-        [HttpGet] // Route for the initial FileProcessing view
-        public IActionResult FileProcessing()
-        {
-            return View("FileProcessing");
-        }
+
+    [HttpGet] 
+    public IActionResult FileProcessing()
+      {
+          return View("FileProcessing");
+      }
 
 
-
+        //Calls the service method and passes the data to it
         [HttpPost("UploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
-            if (file != null)
+            if (file != null) 
             {
                 try
                 {
                     using var stream = file.OpenReadStream();
+                    //Calling the method in the fileservice class and passing the data to it
                     await _azureFileService.UploadFileAsync("file-storage", file.FileName , stream);
-                    ViewBag.Message = "File uploaded successfully.";
+                    ViewBag.Message = "File uploaded.";
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +58,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             return View("FileProcessing");
         }
 
-  [HttpPost("UploadMedia")] // Specify the route for media uploads
+  [HttpPost("UploadMedia")] 
         public async Task<IActionResult> UploadMedia(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -65,10 +69,10 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
             var conName = "multimedia-blob-storage";
             var blobName = file.FileName;
-
+            //Calling the method in the blobservice class and passing the data to it
             if (await _azureBlobStorageService.UploadBlobAsync(conName, blobName, file.OpenReadStream()))
             {
-                ViewBag.Message = $"Media file {file.FileName} uploaded successfully!";
+                ViewBag.Message = $"Media file {file.FileName} uploaded";
             }
             else
             {
@@ -80,28 +84,28 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
         }
 
-        [HttpPost("ProcessOrder")] // Specify the route for processing orders
+        [HttpPost("ProcessOrder")] 
         public async Task<IActionResult> ProcessOrder(string orderID)
         {
             if (!string.IsNullOrWhiteSpace(orderID))
             {
                 try
                 {
-                    // Send the order ID to the queue
+                    //Calling the method in the queueservice class and passing the data to it
                     await _azureQueueService.UploadMessageAsync("processing-queue", $"Processing order {orderID}");
-                    ViewBag.Message = $"Order {orderID} has been sent to the processing queue.";
+                    ViewBag.Message = $"Order {orderID} is being processed";
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = $"Failed to send order {orderID} to the processing queue: {ex.Message}";
+                    ViewBag.Message = $"Failed to process Order {orderID} : {ex.Message}";
                 }
             }
             else
             {
-                ViewBag.Message = "Order ID cannot be empty.";
+                ViewBag.Message = "Order ID must have a value";
             }
 
-            // Awaiting the RedirectToAction
+           
             return await Task.FromResult(RedirectToAction("FileProcessing"));
         }
 
@@ -109,5 +113,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
     }
 }
-
+/*//Reference List:
+//OpenAI.2024. Chat-GPT(Version 3.5).[Large language model]. Available at: https://chat.openai.com/ [Accessed: 1 October 2024].
+*/
 
