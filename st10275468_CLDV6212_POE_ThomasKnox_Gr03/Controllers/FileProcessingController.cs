@@ -38,7 +38,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 try
                 {
                     using var stream = file.OpenReadStream();
-                    await _azureFileService.UploadFileToShareAsync(file.FileName, "file-storage", stream);
+                    await _azureFileService.UploadFileAsync("file-storage", file.FileName , stream);
                     ViewBag.Message = "File uploaded successfully.";
                 }
                 catch (Exception ex)
@@ -54,11 +54,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             return View("FileProcessing");
         }
 
-
-
-
-
-        [HttpPost("UploadMedia")] // Specify the route for media uploads
+  [HttpPost("UploadMedia")] // Specify the route for media uploads
         public async Task<IActionResult> UploadMedia(IFormFile file)
         {
             if (file == null || file.Length == 0)

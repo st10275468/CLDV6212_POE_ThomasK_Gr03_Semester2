@@ -14,9 +14,9 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions
             string tableName = "customerdetails";
             builder.Services.AddSingleton<AzureTableStorageService>();
             builder.Services.AddHttpClient<AzureBlobStorageService>();
-            
-            builder.Services.AddSingleton<AzureTableStorageService>();
-            builder.Services.AddSingleton<AzureFileService>();
+            builder.Services.AddHttpClient<AzureFileService>();
+           
+           
             builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
 

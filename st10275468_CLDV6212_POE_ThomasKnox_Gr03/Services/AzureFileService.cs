@@ -10,23 +10,27 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
     {
         private readonly ShareServiceClient _shareServiceClient;
         private readonly HttpClient _httpClient;
-        private readonly string _functionURl = "https://cldvfunctions.azurewebsites.net/api/writeFileFunction?";
-        public AzureFileService(IConfiguration configuration, HttpClient httpClient)
+
+       public AzureFileService(IConfiguration configuration, HttpClient httpClient)
         {
             _shareServiceClient = new ShareServiceClient(configuration["AzureStorage:ConnectionString"]);
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));   
+            _httpClient = httpClient ;   
         }
 
-        public async Task UploadFileToShareAsync(string fileName, string shareName, Stream content)
+        public async Task UploadFileAsync(string shareName, string fileName, Stream content)
         {
-            var url = $"{_functionURl}shareName={Uri.EscapeDataString(shareName)}&fileName={Uri.EscapeDataString(fileName)}";
+
+            var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/writeFileFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&shareName={shareName}&fileName={fileName}"; 
+           
             using var formContent = new MultipartFormDataContent();
+
             var streamContent = new StreamContent(content);
+
             streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
             formContent.Add(streamContent, "file", fileName);
             try
             {
-                var response = await _httpClient.PostAsync(url, formContent);
+                var response = await _httpClient.PostAsync(requestUrl, formContent);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -42,25 +46,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
 
 
 
-            /* if (file == null || file.Length <= 0)
-                 return false;
-
-             var shareClient = _shareServiceClient.GetShareClient(shareName);
-             await shareClient.CreateIfNotExistsAsync();
-
-             var directoryClient = shareClient.GetDirectoryClient(directoryName);
-             await directoryClient.CreateIfNotExistsAsync();
-
-             var fileClient = directoryClient.GetFileClient(file.FileName);
-             await fileClient.CreateAsync(file.Length);
-
-             using (var stream = file.OpenReadStream())
-             {
-                 await fileClient.UploadAsync(stream);
-             }
-
-             return true;
-         }*/
+           
         }
     }
 }
