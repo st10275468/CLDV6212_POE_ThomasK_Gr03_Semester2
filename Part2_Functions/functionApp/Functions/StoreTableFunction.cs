@@ -6,44 +6,47 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models;
 using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 {
     public class StoreTableFunction
     {
-        private readonly ILogger<StoreTableFunction> _logger;
-        private readonly AzureTableStorageService _azureTableStorageService;
-
-        public StoreTableFunction(ILogger<StoreTableFunction> logger, AzureTableStorageService azureTableStorageService)
-        {
-            _logger = logger;
-            _azureTableStorageService = azureTableStorageService;
-        }
-
         
         [Function("StoreTableFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest request)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request to add a customer to Azure Table Storage.");
+            string tblName = request.Query["tableName"];
+            string partitionKey = request.Query["partitionKey"];
+            string rowKey = request.Query["rowKey"];
+            string name = request.Query["name"];
+            string surname = request.Query["surname"];
+            string email = request.Query["email"];
+            string number = request.Query["number"];
 
-            var customer = await req.ReadFromJsonAsync<CustomerDetails>();
-            if (customer == null)
+            if (string.IsNullOrEmpty(tblName) ||
+                string.IsNullOrEmpty(partitionKey) ||
+                string.IsNullOrEmpty(rowKey) ||
+                string.IsNullOrEmpty(name) ||
+                string.IsNullOrEmpty(surname) ||
+                string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(number))
             {
-                _logger.LogWarning("No customer details provided.");
-                return new BadRequestObjectResult("No customer details provided.");
+                return new BadRequestObjectResult("All fields must be provided");
             }
 
-            try
-            {
-                await _azureTableStorageService.AddEntityAsync(customer);
-                _logger.LogInformation($"Customer {customer.name} added successfully.");
-                return new OkObjectResult($"Customer {customer.name} added successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error adding customer: {ex.Message}");
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
+            var conString = Environment.GetEnvironmentVariable("connectionStorage");
+           var serviceClient = new TableServiceClient(conString);
+            var tableClient = serviceClient.GetTableClient(tblName);
+            await tableClient.CreateIfNotExistsAsync();
+
+            var entity = new TableEntity(partitionKey, rowKey) { ["name"] = name, ["surname"] = surname , ["email"] = email, ["number"] = number};
+            
+            await tableClient.AddEntityAsync(entity);
+
+            return new OkObjectResult("Customer added to table");
+            
+               
         }
     }
 

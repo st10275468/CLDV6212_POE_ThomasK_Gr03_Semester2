@@ -32,18 +32,22 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             _httpClient = httpClient;
         }
 
-        public async Task AddEntityAsync(CustomerDetails customer)
-        {
-            customer.PartitionKey = "CustomerDetails"; // Set your desired partition key
-            customer.RowKey = Guid.NewGuid().ToString(); // Generate a unique row key
-
-            await _tableClient.AddEntityAsync(customer);
-        }
         public async Task<string> AddCustomerAsync(CustomerDetails customer)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("https://cldvfunctions.azurewebsites.net/api/StoreTableFunction?code=EWcNtaatLW27vpgW6GrrQQ0IraX3hSatklo7p6ogiBMfAzFuEUb2Mw%3D%3D", customer);
+                // Constructing the request URL by appending query parameters for customer data
+                var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/StoreTableFunction?code=EWcNtaatLW27vpgW6GrrQQ0IraX3hSatklo7p6ogiBMfAzFuEUb2Mw%3D%3D" +
+                                 $"&tableName=customerdetails" +
+                                 $"&partitionKey=CustomerDetails" +
+                                 $"&rowKey={customer.RowKey}" +
+                                 $"&name={customer.name}" +
+                                 $"&surname={customer.surname}" +
+                                 $"&email={customer.email}" +
+                                 $"&number={customer.number}";
+
+                // Sending the POST request
+                var response = await _httpClient.PostAsync(requestUrl, null);
 
                 if (response.IsSuccessStatusCode)
                 {
