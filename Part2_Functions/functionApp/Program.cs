@@ -21,6 +21,7 @@ public class Program
                 b.AddHttp();
                 b.AddAzureStorageBlobs(); // For Blob Storage functions
                 b.AddAzureStorageQueues(); // For Queue Storage functions
+    
                                            // b.AddAzureStorageQueuesScaleForTrigger(); // Add this if scaling is needed for Queue Triggers
             })
             .Build();
