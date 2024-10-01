@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -8,7 +9,36 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 {
     public class writeBlobFunction
     {
-        private readonly ILogger<writeBlobFunction> _logger;
+
+        [Function("writeBlobFunction")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] 
+            HttpRequest request, ILogger logger
+            )
+        {
+            string conName = request.Query["conName"];
+            string blobName = request.Query["blobName"];
+
+            if (string.IsNullOrEmpty(conName) || string.IsNullOrEmpty(blobName)){
+
+                return new BadRequestObjectResult("Must provide container and blob name");
+            
+            
+            }
+
+            var conString = Environment.GetEnvironmentVariable("connectionStorage");
+            var blobServiceClient = new BlobServiceClient(conString);
+
+
+        }
+        
+        
+        
+
+
+
+        
+        /*private readonly ILogger<writeBlobFunction> _logger;
         private readonly AzureBlobStorageService _azureBlobStorageService;
 
         public writeBlobFunction(ILogger<writeBlobFunction> logger, AzureBlobStorageService azureBlobStorageService)
@@ -57,6 +87,6 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
                 _logger.LogError($"Error uploading media file: {ex.Message}");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-        }
+        } */
     }
 }
