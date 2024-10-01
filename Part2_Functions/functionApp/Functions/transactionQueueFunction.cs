@@ -12,33 +12,37 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 {
     public class transactionQueueFunction
     {
-        private readonly AzureQueueService _azureQueueService;
-        private readonly ILogger<transactionQueueFunction> _logger;
-
-        public transactionQueueFunction(AzureQueueService azureQueueService, ILogger<transactionQueueFunction> logger)
-        {
-            _azureQueueService = azureQueueService;
-            _logger = logger;
-        }
-
+       
         [Function("transactionQueueFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest request)
         {
-            _logger.LogInformation("Processing an order request.");
-
-            string queueName = req.Query["queueName"];
-            string queueMessage = req.Query["message"];
-
-            var connectionString = Environment.GetEnvironmentVariable("connectionStorage");
-
-            var queueServiceClient = new QueueServiceClient(connectionString);
-
-            var queueClient = queueServiceClient.GetQueueClient(queueName);
-
-            await queueClient.CreateIfNotExistsAsync();
-            await queueClient.SendMessageAsync(queueMessage);
             
-            return new OkObjectResult(true);
+
+            string queueName = request.Query["queueName"];
+            string queueMessage = request.Query["queueMessage"];
+
+            if (string.IsNullOrEmpty(queueName) || string.IsNullOrEmpty(queueMessage))
+            {
+                return new BadRequestObjectResult("Must provide queue name and message");
+            }
+            try
+            {
+                var conString = Environment.GetEnvironmentVariable("connectionStorage");
+
+                var queueServiceClient = new QueueServiceClient(conString);
+
+                var queueClient = queueServiceClient.GetQueueClient(queueName);
+
+                await queueClient.CreateIfNotExistsAsync();
+                await queueClient.SendMessageAsync(queueMessage);
+
+                return new OkObjectResult(true);
+            }
+            catch  {
+
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
         }
     }
 

@@ -52,7 +52,7 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
 
                 return new OkObjectResult("File uploaded");
             }
-            catch (Exception ex)
+            catch 
             {
                 
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);

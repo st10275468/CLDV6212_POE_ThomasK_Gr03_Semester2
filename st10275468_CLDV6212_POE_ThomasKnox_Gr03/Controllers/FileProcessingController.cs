@@ -80,7 +80,6 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
         }
 
-
         [HttpPost("ProcessOrder")] // Specify the route for processing orders
         public async Task<IActionResult> ProcessOrder(string orderID)
         {
@@ -89,7 +88,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 try
                 {
                     // Send the order ID to the queue
-                    await _azureQueueService.SendMessageAsync("processing-queue", $"Processing order {orderID}");
+                    await _azureQueueService.UploadMessageAsync("processing-queue", $"Processing order {orderID}");
                     ViewBag.Message = $"Order {orderID} has been sent to the processing queue.";
                 }
                 catch (Exception ex)

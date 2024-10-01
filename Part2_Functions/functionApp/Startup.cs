@@ -13,10 +13,12 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions
             string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
             string tableName = "customerdetails";
             builder.Services.AddSingleton<AzureTableStorageService>();
+
             builder.Services.AddHttpClient<AzureBlobStorageService>();
             builder.Services.AddHttpClient<AzureFileService>();
-           
-           
+            builder.Services.AddHttpClient<AzureQueueService>();
+            builder.Services.AddHttpClient<AzureTableStorageService>();
+
             builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
 
