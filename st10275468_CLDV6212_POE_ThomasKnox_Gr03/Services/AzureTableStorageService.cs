@@ -43,7 +43,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("https://cldvfunctions.azurewebsites.net/api/StoreTableFunction", customer);
+                var response = await _httpClient.PostAsJsonAsync("https://cldvfunctions.azurewebsites.net/api/StoreTableFunction?code=EWcNtaatLW27vpgW6GrrQQ0IraX3hSatklo7p6ogiBMfAzFuEUb2Mw%3D%3D", customer);
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -1,44 +1,68 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Mvc;
-    using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services;
+using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services;
+using System.Net.Http.Headers;
 namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
 {
     [Route("[controller]")]
     public class FileProcessingController : Controller
-        {
-            private readonly AzureFileService _azureFileService;
-            private readonly AzureQueueService _azureQueueService;
+    {
+        private readonly AzureFileService _azureFileService;
+        private readonly AzureQueueService _azureQueueService;
         private readonly AzureBlobStorageService _azureBlobStorageService;
+
         private readonly HttpClient _httpClient;
-        public FileProcessingController(AzureFileService azureFileService, AzureQueueService azureQueueService, AzureBlobStorageService azureBlobService, HttpClient httpClient)
-            {
-                _azureFileService = azureFileService;
-                _azureQueueService = azureQueueService;
-                     _azureBlobStorageService = azureBlobService;
+        public FileProcessingController( AzureFileService azureFileService, AzureQueueService azureQueueService, AzureBlobStorageService azureBlobService, HttpClient httpClient)
+        {
+            _azureFileService = azureFileService;
+            _azureQueueService = azureQueueService;
+            _azureBlobStorageService = azureBlobService;
             _httpClient = httpClient;
+
         }
 
-            [HttpGet] // Route for the initial FileProcessing view
-            public IActionResult FileProcessing()
-            {
-                return View("FileProcessing");
-            }
+        [HttpGet] // Route for the initial FileProcessing view
+        public IActionResult FileProcessing()
+        {
+            return View("FileProcessing");
+        }
 
-        [HttpPost("UploadFile")] // Specify the route for file uploads
+
+
+
+
+
+        [HttpPost("UploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
-            if (await _azureFileService.UploadFileToShareAsync(file, "file-storage", "Files")) // Call the service method
+            if (file != null)
             {
-                ViewBag.Message = $"File {file.FileName} uploaded successfully!";
+                try
+                {
+                    using var stream = file.OpenReadStream();
+                    await _azureFileService.UploadFileToShareAsync(file.FileName, "file-storage", stream);
+                    ViewBag.Message = "File uploaded successfully.";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = $"Error uploading file: {ex.Message}";
+                }
             }
             else
             {
-                ViewBag.Message = "File upload failed.";
+                ViewBag.Message = "No file uploaded.";
             }
 
-            return View("FileProcessing"); // Return to the view
+            return View("FileProcessing");
         }
+
+
+
+
+
+
+
 
         [HttpPost("UploadMedia")] // Specify the route for media uploads
         public async Task<IActionResult> UploadMedia(IFormFile file)
@@ -61,6 +85,10 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
 
             return View("FileProcessing"); // Return to the view
         }
+
+
+
+
 
         [HttpPost("ProcessOrder")] // Specify the route for processing orders
         public async Task<IActionResult> ProcessOrder(string orderID)
@@ -86,6 +114,14 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
             // Awaiting the RedirectToAction
             return await Task.FromResult(RedirectToAction("FileProcessing"));
         }
+
+
+
+
+
+
+
+
 
 
         //Method created to allow employees to upload various multi-media to the azure blob storage service

@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,28 +22,23 @@ namespace st10275468_CLDV6212_PoePart2_Sem2_Functions.Functions
         }
 
         [Function("transactionQueueFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req)
         {
             _logger.LogInformation("Processing an order request.");
 
-            string orderID = req.Form["orderID"];
-            if (string.IsNullOrWhiteSpace(orderID))
-            {
-                return new BadRequestObjectResult("Order ID cannot be empty.");
-            }
+            string queueName = req.Query["queueName"];
+            string queueMessage = req.Query["message"];
 
-            try
-            {
-                // Queue a message with the order information
-                await _azureQueueService.SendMessageAsync("processing-queue", $"Processing order {orderID}");
-                _logger.LogInformation($"Order {orderID} has been sent to the processing queue.");
-                return new OkObjectResult($"Order {orderID} has been sent to the processing queue.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to send order {orderID} to the processing queue: {ex.Message}");
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
+            var connectionString = Environment.GetEnvironmentVariable("connectionStorage");
+
+            var queueServiceClient = new QueueServiceClient(connectionString);
+
+            var queueClient = queueServiceClient.GetQueueClient(queueName);
+
+            await queueClient.CreateIfNotExistsAsync();
+            await queueClient.SendMessageAsync(queueMessage);
+            
+            return new OkObjectResult(true);
         }
     }
 
