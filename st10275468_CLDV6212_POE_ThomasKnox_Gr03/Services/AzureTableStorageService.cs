@@ -34,7 +34,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             _tableClient.CreateIfNotExists(); 
             //creating a new table if it doesnt exist
             _httpClient = httpClient;
-            _sqlConnectionString = Environment.GetEnvironmentVariable("SqlDatabase");
+            _sqlConnectionString = configuration.GetConnectionString("SqlDatabase");
             if (string.IsNullOrEmpty(_sqlConnectionString))
             {
                 throw new ArgumentException("SQL connection string is invalid");
@@ -128,6 +128,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             }
             catch (Exception ex)
             {
+                // Handle exceptions and provide detailed information
                 throw new InvalidOperationException("Failed to insert customer into SQL database", ex);
             }
         }
