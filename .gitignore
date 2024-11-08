@@ -367,7 +367,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-git add .gitignore
-git commit -m "Update .gitignore to exclude appsettings files"
-git push
