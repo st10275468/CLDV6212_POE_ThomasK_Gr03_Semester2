@@ -40,6 +40,10 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Controllers
                 }
             }
 
+            await _azureTableStorageService.InsertCustomerProfile(customer);
+
+
+
             // Always fetch and return the updated customer profiles regardless of success or failure
             var customerProfiles = await _azureTableStorageService.GetAllEntitiesAsync();
             return View("DataManagement", customerProfiles);

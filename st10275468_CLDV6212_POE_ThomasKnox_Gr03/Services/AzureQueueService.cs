@@ -20,7 +20,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         public async Task UploadMessageAsync(string queueName, string queueMessage)
         {
             //Constructing the url
-            var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/transactionQueueFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&queueName={queueName}&queueMessage={queueMessage}";
+            var requestUrl = $"https://cldvFunctionsApp.azurewebsites.net/api/transactionQueueFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&queueName={queueName}&queueMessage={queueMessage}";
             //Making a new request
             var request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
             //Sending the request to the function

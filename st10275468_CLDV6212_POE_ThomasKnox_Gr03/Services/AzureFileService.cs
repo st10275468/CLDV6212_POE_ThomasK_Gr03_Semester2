@@ -21,7 +21,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         public async Task UploadFileAsync(string shareName, string fileName, Stream content)
         {
             //Creating the request url
-            var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/writeFileFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&shareName={shareName}&fileName={fileName}"; 
+            var requestUrl = $"https://cldvFunctionsApp.azurewebsites.net/api/writeFileFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&shareName={shareName}&fileName={fileName}"; 
            
             using var formContent = new MultipartFormDataContent();
             //Creating a stream content for the uploading of the file

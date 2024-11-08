@@ -28,7 +28,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
                 var formData = new MultipartFormDataContent();
                 formData.Add(new StreamContent(content), "file", blobName) ;
                 //Creating the request url
-                var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/writeBlobFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&conName={containerName}&blobName={blobName}";
+                var requestUrl = $"https://cldvFunctionsApp.azurewebsites.net/api/writeBlobFunction?code=4EfNMiYnSQe6neQrhnErbYkZv5tTv4a67gcoloz7sEv7AzFu2AAkVQ%3D%3D&conName={containerName}&blobName={blobName}";
                 //Sending the request to the function
                 var response = await _httpClient.PostAsync(requestUrl, formData);
 

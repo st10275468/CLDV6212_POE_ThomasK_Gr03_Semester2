@@ -2,6 +2,8 @@
 using Azure.Data.Tables;
 using Microsoft.Extensions.Configuration;
 using st10275468_CLDV6212_POE_ThomasKnox_Gr03.Models;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -13,7 +15,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
         //Azure table name
         private readonly string _tableName = "customerdetails";
         private readonly HttpClient _httpClient;
- 
+        private readonly string _sqlConnectionString;
         public AzureTableStorageService(HttpClient httpClient ,IConfiguration configuration)
         {
             if (configuration == null)
@@ -32,7 +34,13 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             _tableClient.CreateIfNotExists(); 
             //creating a new table if it doesnt exist
             _httpClient = httpClient;
+            _sqlConnectionString = Environment.GetEnvironmentVariable("SqlDatabase");
+            if (string.IsNullOrEmpty(_sqlConnectionString))
+            {
+                throw new ArgumentException("SQL connection string is invalid");
+            }
         }
+
 
         //Method created that calls the function via the funcion URL which then uploads the customer details to azure
         public async Task<string> AddCustomerAsync(CustomerDetails customer)
@@ -40,7 +48,7 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             try
             {
                 //Creating the url based on the parameters
-                var requestUrl = $"https://cldvfunctions.azurewebsites.net/api/StoreTableFunction?code=EWcNtaatLW27vpgW6GrrQQ0IraX3hSatklo7p6ogiBMfAzFuEUb2Mw%3D%3D" +
+                var requestUrl = $"https://cldvfunctionsapp.azurewebsites.net/api/StoreTableFunction?code=RiljAfxvFOb_Fs5lJ-Oy_mtZLyksZVilVHV5R6sznt-AAzFulFFm4Q==" +
                                  $"&tableName=customerdetails" +
                                  $"&partitionKey=CustomerDetails" +
                                  $"&rowKey={customer.RowKey}" +
@@ -51,10 +59,14 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
 
                //Sending a request for the function
                 var response = await _httpClient.PostAsync(requestUrl, null);
-
+                
                 if (response.IsSuccessStatusCode)
                 {
+                    
                     return $"Customer {customer.name} added";
+                    //SQL statements in here
+
+
                 }
                 else
                 {
@@ -89,6 +101,34 @@ namespace st10275468_CLDV6212_POE_ThomasKnox_Gr03.Services
             {
                 throw new InvalidOperationException("Failed to retrieve customer profiles", ex);
                 //Exception if an error occurs
+            }
+        }
+
+
+        public async Task InsertCustomerProfile(CustomerDetails customer)
+        {
+            
+            var query = @"INSERT INTO Customer (name, surname, email, number)
+                          VALUES (@name, @surname, @email, @number)";
+
+            var connectionString = _sqlConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(query, connection);
+                    sqlCommand.Parameters.AddWithValue("@name", customer.name);
+                    sqlCommand.Parameters.AddWithValue("@surname", customer.surname);
+                    sqlCommand.Parameters.AddWithValue("@email", customer.email);
+                    sqlCommand.Parameters.AddWithValue("@number", customer.number);
+
+                    connection.Open();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to insert customer into SQL database", ex);
             }
         }
     }
